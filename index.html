@@ -274,7 +274,7 @@
                     <textarea id="noteContent" placeholder="Tuliskan detail pekerjaan atau kendala yang dihadapi..." required></textarea>
                 </div>
                 <div class="btn-group">
-                    <button type="submit">Simpan Kegiatan</button>
+                    <button type="submit" id="btnSave">Simpan Kegiatan</button>
                     <button type="button" class="btn-secondary" onclick="exportToCSV()">Unduh ke Excel (CSV)</button>
                 </div>
             </form>
@@ -300,9 +300,12 @@
     </div>
 
     <script>
+        // URL API Google Apps Script Anda
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxJgMvkvPq0-IVrDxNeNjE-yjdzrFW3PECgW0rCaA5LqaMEtfZDT5cOYJuTJDFizgZKFA/exec";
+
         document.getElementById('noteDate').valueAsDate = new Date();
 
-        // Mengambil data dari memori lama secara otomatis jika ada
+        // Mengambil data dari memori penyimpanan lokal jika ada
         let savedNotes = localStorage.getItem('work_notes_official_identity') || 
                          localStorage.getItem('work_notes_date_only') || 
                          localStorage.getItem('work_notes_with_identity') || 
@@ -326,12 +329,54 @@
                 content: document.getElementById('noteContent').value
             };
 
+            // 1. Simpan ke LocalStorage HP/PC
             notes.unshift(newNote);
             saveAndRender();
-            
+
+            // 2. Kirim secara otomatis ke Google Sheets
+            kirimKeGoogleSheets(newNote);
+
+            // Clear form
             document.getElementById('noteTitle').value = '';
             document.getElementById('noteContent').value = '';
         });
+
+        function kirimKeGoogleSheets(note) {
+            const btnSave = document.getElementById('btnSave');
+            const originalText = btnSave.innerText;
+            btnSave.innerText = "Menyimpan ke Cloud...";
+            btnSave.disabled = true;
+
+            const payload = {
+                nama: "Andik Kurniawan, S.Kom",
+                jabatan: "Penata Layanan Operasional",
+                unit_kerja: "Sub Bagian Tata Usaha - SMKN 1 Sukorejo",
+                tanggal: note.date,
+                kategori: note.category,
+                judul: note.title,
+                rincian: note.content
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                alert("Kegiatan berhasil disimpan secara online ke Google Sheets!");
+            })
+            .catch(error => {
+                console.error("Gagal mengirim ke Google Sheets:", error);
+                alert("Gagal menyimpan ke Google Sheets, namun tetap tersimpan di memori perangkat.");
+            })
+            .finally(() => {
+                btnSave.innerText = originalText;
+                btnSave.disabled = false;
+            });
+        }
 
         function saveAndRender() {
             localStorage.setItem('work_notes_official_identity', JSON.stringify(notes));
@@ -339,7 +384,7 @@
         }
 
         function deleteNote(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus catatan kegiatan ini?')) {
+            if (confirm('Apakah Anda yakin ingin menghapus catatan kegiatan ini dari tampilan lokal?')) {
                 notes = notes.filter(note => note.id !== id);
                 saveAndRender();
             }
