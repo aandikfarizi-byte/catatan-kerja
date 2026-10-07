@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catatan Kegiatan Kerja - Andik Kurniawan</title>
+    <style>
+        :root {
+            --primary-color: #0284c7;
+            --primary-hover: #0369a1;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            border-top: 4px solid var(--primary-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 4px 0;
+            font-size: 1.5rem;
+        }
+
+        p.subtitle {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0 0 14px 0;
+        }
+
+        .identity-box {
+            display: inline-block;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            color: #0369a1;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            text-align: left;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .identity-box b {
+            color: #0284c7;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        input[type="date"],
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button.btn-secondary {
+            background-color: #0d9488;
+        }
+        button.btn-secondary:hover {
+            background-color: #0f766e;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .filters input {
+            flex: 2;
+        }
+
+        .filters select {
+            flex: 1;
+        }
+
+        .note-item {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 4px;
+            background: #e0f2fe;
+            color: #0369a1;
+            margin-bottom: 6px;
+        }
+
+        .note-date {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .note-title {
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .note-content {
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #334155;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: auto;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #94a3b8;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Catatan Kegiatan Kerja</h1>
+            <p class="subtitle">Rekam tugas harian, administrasi, dan progres pekerjaan</p>
+            <div class="identity-box">
+                <div><b>Nama:</b> Andik Kurniawan, S.Kom</div>
+                <div><b>Jabatan:</b> Penata Layanan Operasional</div>
+                <div><b>Unit Kerja:</b> Sub Bagian Tata Usaha - SMKN 1 Sukorejo</div>
+            </div>
+        </header>
+
+        <!-- Form Input Kegiatan -->
+        <div class="card">
+            <form id="noteForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="noteDate">Tanggal</label>
+                        <input type="date" id="noteDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="noteCategory">Kategori</label>
+                        <select id="noteCategory" required>
+                            <option value="Administrasi">Administrasi / TU</option>
+                            <option value="Kesiswaan">Kesiswaan</option>
+                            <option value="Akademik / Tugas">Akademik / Kuliah</option>
+                            <option value="Sarpras">Sarpras</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="noteTitle">Judul / Pokok Kegiatan</label>
+                    <input type="text" id="noteTitle" placeholder="Contoh: Penyusunan Daftar Hadir Upacara" required>
+                </div>
+                <div class="form-group">
+                    <label for="noteContent">Rincian Kegiatan</label>
+                    <textarea id="noteContent" placeholder="Tuliskan detail pekerjaan atau kendala yang dihadapi..." required></textarea>
+                </div>
+                <div class="btn-group">
+                    <button type="submit">Simpan Kegiatan</button>
+                    <button type="button" class="btn-secondary" onclick="exportToCSV()">Unduh ke Excel (CSV)</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Filter & Pencarian -->
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="Cari kegiatan..." oninput="renderNotes()">
+            <select id="filterCategory" onchange="renderNotes()">
+                <option value="">Semua Kategori</option>
+                <option value="Administrasi">Administrasi / TU</option>
+                <option value="Kesiswaan">Kesiswaan</option>
+                <option value="Akademik / Tugas">Akademik / Kuliah</option>
+                <option value="Sarpras">Sarpras</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+        </div>
+
+        <!-- Daftar Catatan -->
+        <div id="notesList">
+            <!-- Data akan dimuat otomatis di sini -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('noteDate').valueAsDate = new Date();
+
+        // Mengambil data dari memori lama secara otomatis jika ada
+        let savedNotes = localStorage.getItem('work_notes_official_identity') || 
+                         localStorage.getItem('work_notes_date_only') || 
+                         localStorage.getItem('work_notes_with_identity') || 
+                         localStorage.getItem('work_notes') || '[]';
+
+        let notes = JSON.parse(savedNotes);
+
+        const noteForm = document.getElementById('noteForm');
+        const notesList = document.getElementById('notesList');
+        const searchInput = document.getElementById('searchInput');
+        const filterCategory = document.getElementById('filterCategory');
+
+        noteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const newNote = {
+                id: Date.now(),
+                date: document.getElementById('noteDate').value,
+                category: document.getElementById('noteCategory').value,
+                title: document.getElementById('noteTitle').value,
+                content: document.getElementById('noteContent').value
+            };
+
+            notes.unshift(newNote);
+            saveAndRender();
+            
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+        });
+
+        function saveAndRender() {
+            localStorage.setItem('work_notes_official_identity', JSON.stringify(notes));
+            renderNotes();
+        }
+
+        function deleteNote(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus catatan kegiatan ini?')) {
+                notes = notes.filter(note => note.id !== id);
+                saveAndRender();
+            }
+        }
+
+        function renderNotes() {
+            const keyword = searchInput.value.toLowerCase();
+            const selectedCat = filterCategory.value;
+
+            const filteredNotes = notes.filter(note => {
+                const matchKeyword = note.title.toLowerCase().includes(keyword) || 
+                                     note.content.toLowerCase().includes(keyword) ||
+                                     note.date.includes(keyword);
+                const matchCategory = selectedCat === "" || note.category === selectedCat;
+                return matchKeyword && matchCategory;
+            });
+
+            if (filteredNotes.length === 0) {
+                notesList.innerHTML = '<div class="card empty-state">Belum ada catatan kegiatan yang sesuai.</div>';
+                return;
+            }
+
+            notesList.innerHTML = filteredNotes.map(note => `
+                <div class="note-item">
+                    <button class="delete-btn" onclick="deleteNote(${note.id})">Hapus</button>
+                    <div class="badge">${escapeHTML(note.category)}</div>
+                    <div class="note-date">${formatDate(note.date)}</div>
+                    <div class="note-title">${escapeHTML(note.title)}</div>
+                    <div class="note-content">${escapeHTML(note.content)}</div>
+                </div>
+            `).join('');
+        }
+
+        function formatDate(dateString) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const date = new Date(dateString + 'T00:00:00');
+            return date.toLocaleDateString('id-ID', options);
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'}[tag] || tag)
+            );
+        }
+
+        function exportToCSV() {
+            if (notes.length === 0) {
+                alert('Belum ada data untuk diunduh.');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,Nama,Jabatan,Unit Kerja,Tanggal,Kategori,Judul Kegiatan,Rincian\n";
+            
+            notes.forEach(note => {
+                const cleanTitle = `"${note.title.replace(/"/g, '""')}"`;
+                const cleanContent = `"${note.content.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
+                csvContent += `"Andik Kurniawan, S.Kom","Penata Layanan Operasional","Sub Bagian Tata Usaha - SMKN 1 Sukorejo",${note.date},${note.category},${cleanTitle},${cleanContent}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "laporan_kegiatan_andik_kurniawan.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        renderNotes();
+    </script>
+</body>
+</html>
